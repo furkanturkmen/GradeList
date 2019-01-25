@@ -1,6 +1,7 @@
 package com.furkanturkmen.gradeslist.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -67,6 +68,16 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.ViewHolder> 
         holder.nameTextView.setText(grade.getGradeText());
         holder.scoreTextView.setText(grade.getGradeScore());
         holder.dateTextView.setText(grade.getGradeDate() );
+
+        double scoreGoodOrBad;
+        for (int i = 0; i < mGrades.size(); i++) {
+            scoreGoodOrBad = Double.parseDouble(holder.scoreTextView.getText().toString());
+            if(scoreGoodOrBad >= 5.5){
+                holder.scoreTextView.setTextColor(Color.GREEN);
+            } else{
+                holder.scoreTextView.setTextColor(Color.RED);
+            }
+        }
     }
 
     @Override

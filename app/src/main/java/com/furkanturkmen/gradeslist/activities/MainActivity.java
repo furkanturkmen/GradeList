@@ -61,12 +61,13 @@ public class MainActivity extends AppCompatActivity implements GradeAdapter.Grad
     public final static int TASK_DELETE_GRADE = 1;
     public final static int TASK_UPDATE_GRADE = 2;
     public final static int TASK_INSERT_GRADE = 3;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FireStoreDB = FirebaseFirestore.getInstance();
@@ -170,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements GradeAdapter.Grad
                 mEditTextDate.setText(strDate);
             }
         }, year, month, day);
-        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+//        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
     }
 
@@ -184,11 +185,8 @@ public class MainActivity extends AppCompatActivity implements GradeAdapter.Grad
     }
 
     public void onGradeDbUpdated(List list) {
-
         mGrades = list;
-
         updateUI();
-
     }
 
     @Override
@@ -267,25 +265,6 @@ public class MainActivity extends AppCompatActivity implements GradeAdapter.Grad
 
                 case TASK_UPDATE_GRADE:
                     db.gradeDao().updateGrades(grades[0]);
-                    // Set the "isCapital" field of the city 'DC'
-                    DocumentReference gradeRef = FireStoreDB.collection("grades").document("different_grade");
-
-                    gradeRef.update(
-                            "gradeDate", grades[0].getGradeDate(),
-                            "gradeScore", grades[0].getGradeScore(),
-                            "gradeText", grades[0].getGradeText())
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Log.d("MainActivity", "DocumentSnapshot successfully updated!");
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w("MainActivity", "Error updating document", e);
-                                }
-                            });
                     break;
 
                 case TASK_INSERT_GRADE:
